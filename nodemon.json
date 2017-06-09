@@ -1,0 +1,18 @@
+{
+  "restartable": "rs",
+  "ignore": [
+    "typescript",
+    ".git",
+    ".idea",
+    "data/*",
+    "service_*/*",
+    "npm-debug.log",
+    "node_modules/*"
+  ],
+  "verbose": true,
+  "execMap": {
+    "js_temp": "node --inspect=0.0.0.0:9229 --trace-sync-io",
+    "js": "node --inspect=0.0.0.0:9229"
+  },
+  "ext": "js json hbs"
+}

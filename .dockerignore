@@ -1,0 +1,39 @@
+.git/
+
+services/
+.dockerignore
+.eslintrc
+.gitignore
+docker-compose.yml
+rancher-docker-compose.yml
+report.xml
+typescript
+
+
+
+# Logs
+logs
+*.log
+*.log.*
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Dependency directory
+# https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git-
+node_modules
+
+#uploads
+data/
+
+# webstorm info
+.ideagit
+.idea
+.vscode
+
+npm-debug.log
+eslint.xml
+run
+

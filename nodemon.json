@@ -5,7 +5,7 @@
     ".git",
     ".idea",
     "data/*",
-    "service_*/*",
+    "services/*",
     "npm-debug.log",
     "node_modules/*"
   ],

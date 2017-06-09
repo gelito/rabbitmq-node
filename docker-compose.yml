@@ -1,14 +1,14 @@
 version: '2'
 services:
-  api:
+  node:
+    container_name: "docker-service-rabbitmq-node"
     build:
-      context: ./services/api/
+      context: ./services/node/
       dockerfile: Dockerfile
-    container_name: "node-skeleton-service-container"
     depends_on:
-      - database
+      - rabbitmq
     links:
-      - database
+      - rabbitmq
     volumes:
       - .:/srv/service
       - ./data/public:/srv/public
@@ -16,19 +16,13 @@ services:
       - "9977:9977"
       - "9229:9229"
 
-  database:
-    container_name: "node-skeleton-mongodb-service-container"
-    image: mongo:3
+  rabbitmq:
+    container_name: "rabbitmq"
+    image: rabbitmq:3-management
     volumes:
-      - ./data/db:/data/db
-    command: --storageEngine wiredTiger
+      - ./data/rabbitmq:/var/lib/rabbitmq/mnesia/
     ports:
-      - "27018:27017"
-
-  cdn:
-    container_name: "node-skeleton-cdn-service-container"
-    build: ./services/cdn/
-    volumes:
-      - ./data/public:/usr/share/nginx/cdn
-    ports:
-      - "8080:80"
+      - "8080:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=kubide
+      - RABBITMQ_DEFAULT_PASS=kubideMola

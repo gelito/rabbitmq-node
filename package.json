@@ -12,7 +12,7 @@
     "lint:jenkins": "eslint -f checkstyle ./src > eslint.xml",
 
     "docker:start": "node ./src/",
-    "docker:dev": "export DEBUG=kubide* && export NODE_PATH=./src/ && npm update --save-dev && npm update --save && clear && nodemon",
+    "docker:dev": "export DEBUG=kubide* && export DEBUG_COLORS=true && npm update --save-dev && npm update --save && clear && nodemon",
     "docker:test": "npm run test",
 
     "ondocker:test":"docker exec -i docker-service-rabbitmq-node script -q -c /bin/bash -c \"npm run docker:test\"",

@@ -7,17 +7,13 @@
     "start": "NODE_PATH=./src/ node ./src/",
     "dev": "export DEBUG=kubide* && export NODE_PATH=./src/ && npm update --save-dev && npm update --save && clear && nodemon",
     "test": "mocha --colors --reporter spec --recursive ./src/**/tests/*.spec.js",
-
     "lint": "eslint ./src",
     "lint:jenkins": "eslint -f checkstyle ./src > eslint.xml",
-
     "docker:start": "node ./src/",
     "docker:dev": "export DEBUG=kubide* && export DEBUG_COLORS=true && npm update --save-dev && npm update --save && clear && nodemon",
     "docker:test": "npm run test",
-
-    "ondocker:test":"docker exec -i docker-service-rabbitmq-node script -q -c /bin/bash -c \"npm run docker:test\"",
+    "ondocker:test": "docker exec -i docker-service-rabbitmq-node script -q -c /bin/bash -c \"npm run docker:test\"",
     "release:minor": "npm version minor",
-
     "packages:unused": "npm-check",
     "packages:update": "npm-check -u"
   },
@@ -29,6 +25,7 @@
   "license": "MIT",
   "homepage": "https://github.com/gelito/rabbitmq-node",
   "dependencies": {
+    "amqplib": "^0.5.1",
     "debug": "^2.6.8",
     "lodash": "^4.17.4"
   },

@@ -1,7 +1,6 @@
 version: '2'
 services:
-  node:
-    container_name: "docker-service-rabbitmq-node"
+  docker-service-rabbitmq-node:
     build:
       context: ./services/node/
       dockerfile: Dockerfile
@@ -12,12 +11,25 @@ services:
     volumes:
       - .:/srv/service
       - ./data/public:/srv/public
-    ports:
-      - "9977:9977"
-      - "9229:9229"
+    environment:
+      - PROCESS=1
+
+  docker-service-rabbitmq-node-2:
+    build:
+      context: ./services/node/
+      dockerfile: Dockerfile
+    depends_on:
+      - docker-service-rabbitmq-node
+      - rabbitmq
+    links:
+      - rabbitmq
+    volumes:
+      - .:/srv/service
+      - ./data/public:/srv/public
+    environment:
+      - PROCESS=2
 
   rabbitmq:
-    container_name: "rabbitmq"
     image: rabbitmq:3-management
     volumes:
       - ./data/rabbitmq:/var/lib/rabbitmq/mnesia/

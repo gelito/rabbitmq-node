@@ -1,0 +1,10 @@
+{
+  "amqp": {
+    "server": "amqp://rabbitmq",
+    "durable": true,
+    "exchangeType": "fanout",
+    "queue": {
+      "noAck" : true
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
   "amqp": {
-    "server": "amqp://rabbitmq",
+    "server": "amqp://kubide:kubideMola@rabbitmq",
     "durable": true,
     "exchangeType": "fanout",
     "queue": {

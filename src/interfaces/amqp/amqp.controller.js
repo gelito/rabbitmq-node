@@ -1,15 +1,16 @@
 const amqplib = require('amqplib');
 const lodash = require('lodash');
+const debug = require('debug')('kubide:amqp');
 const config = require('./amqp.config.json');
 
 // TODO study channel and the needs to create/close each time we send a message or not necessary
+// http://www.squaremobius.net/amqp.node/channel_api.html
 
 class AMQPEvent {
   constructor() {
     this.conf = config;
     this.amqplib = amqplib;
     this.connection = null;
-    this.connect();
   }
   async config(externalConfig = {}) {
     this.conf = lodash.merge(externalConfig, this.conf);
@@ -31,26 +32,32 @@ class AMQPEvent {
     return this.amqplib;
   }
 
-  async emit(exchange = '', message = {}) {
+  async emit(exchange = '', externalMsg = '') {
+    const message = (typeof externalMsg === 'string') ? externalMsg : JSON.stringify(externalMsg);
     const connection = await this.connect();
     const ch = await connection.createChannel();
-    await ch.assertExchange(exchange, this.conf.exchangeType, { durable: this.conf.durable });
+    await ch.assertExchange(exchange,
+      this.conf.amqp.exchangeType,
+      { durable: this.conf.amqp.durable });
     ch.publish(exchange, '', new Buffer(message));
     ch.close();
   }
 
   async on(exchange = '', cb) {
     const proccessMsg = (msg) => {
-      console.log('message', msg.content.toString(), msg.content);
-      cb(msg.content);
+      if (cb) {
+        cb(msg.content.toString(), this);
+      }
     };
 
     const connection = await this.connect();
     const ch = await connection.createChannel();
-    await ch.assertExchange(exchange, this.conf.exchangeType, { durable: this.conf.durable });
+    await ch.assertExchange(exchange,
+      this.conf.amqp.exchangeType,
+      { durable: this.conf.amqp.durable });
     const assertQueue = await ch.assertQueue('', { exclusive: true });
-    await ch.bindQueue(assertQueue.queue, 'logs', '');
-    ch.consume(assertQueue.queue, proccessMsg, { noAck: this.conf.queue.noAck });
+    await ch.bindQueue(assertQueue.queue, exchange, '');
+    ch.consume(assertQueue.queue, proccessMsg, { noAck: this.conf.amqp.queue.noAck });
   }
 
 }
